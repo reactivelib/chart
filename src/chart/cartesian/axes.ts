@@ -1,5 +1,5 @@
 import {IChartAxisSettings} from './axis/collection/factory';
-import {assemble, deps, IContainer, ObjectContainer, variableFactory} from '../../config/di/index';
+import {assemble} from '../../config/di/index';
 import {ICartesianChartSettings, XYChart} from './index';
 import {MultiStarter} from '../../config/start';
 import {AxisCollection, IAxisCollection, XAxisCollection, YAxisCollection} from './axis/collection/index';

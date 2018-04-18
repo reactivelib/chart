@@ -37,7 +37,7 @@ export default function(){
     return function(data: ICartesianXPoint, series: AbstractSeries, settings: IPointHighlightSettings){
         var shape1 = new HighlightPoint(data);
         var shape2 = new HighlightYEnd(data);
-        var r = 5;
+        var r = 4;
         if (settings.radius){
             r = settings.radius;
         }

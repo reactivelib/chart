@@ -112,6 +112,8 @@ export class CandleShapeRenderer extends CartesianSeriesGroupRenderer{
 }
 
 export class CandleGroupSeriesRenderer extends BaseCartesianRenderer{
+
+    @create
     createRenderer(set: ISeriesRendererSettings): ISeriesRenderer {
         return new CandleShapeRenderer(set);
     }

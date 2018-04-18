@@ -3,29 +3,40 @@
  */
 
 import {IReactiveXSortedRingBuffer, ReactiveXSortedRingBuffer} from "../../../../reactive/collection/ring";
-import {ICartesianDataSettings} from "../../../series/series";
-import {ICartesianXInterval, IIntervalData} from "../../../../../datatypes/interval";
+import {ICartesianXInterval, ICartesianXIntervalSetting} from "../../../../../datatypes/interval";
+import csvRowToJson from "../../../../../data/csv/json";
+import {ICartesianXPoint, ICartesianXPointSetting} from "../../../../../datatypes/value";
+import {XSortedDataToBufferConverter} from "../convert";
+import {CartesianIntervalDataType} from "./index";
 
-export default function(data: ICartesianXInterval[] | IReactiveXSortedRingBuffer<ICartesianXInterval> | ICartesianDataSettings): IReactiveXSortedRingBuffer<ICartesianXInterval>{
-    var coll = new ReactiveXSortedRingBuffer<ICartesianXInterval>();
-    if (Array.isArray(data)){
-        data.forEach((d, index) => {
-            if (!("x" in d)){
-                (<ICartesianXInterval>d).x = index;
-            }
-            coll.push(d);
+class IntervalConverter extends XSortedDataToBufferConverter<ICartesianXInterval, ICartesianXIntervalSetting>{
+
+    rawDataToData(i: number, d: ICartesianXIntervalSetting): ICartesianXInterval{
+        return <ICartesianXInterval>d;
+    }
+
+    parseCSVText(text: string){
+        return csvRowToJson<ICartesianXInterval>({
+            hasHeader: true,
+            rowToType: {
+                x: "number",
+                y: {
+                    required: true,
+                    type: "number"
+                },
+                ye: {
+                    required: true,
+                    type: "number"
+                },
+                l: "string",
+                c: "string"
+            },
+            csv: text
         });
     }
-    else if ((<ICartesianDataSettings>data).type)
-    {
-        var s = <ICartesianDataSettings>data;
-        switch (s.type){
-            default:
-                throw new Error("Unknown data source type "+s.type);
-        }
-    }
-    else {
-        return <IReactiveXSortedRingBuffer<ICartesianXInterval>>data;
-    }
-    return coll;
+
+}
+
+export default function(data: CartesianIntervalDataType): IReactiveXSortedRingBuffer<ICartesianXInterval>{
+    return <ReactiveXSortedRingBuffer<ICartesianXInterval>>new IntervalConverter().convert(data);
 }

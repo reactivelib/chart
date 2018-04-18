@@ -41,3 +41,9 @@ export function createValueDataTransformer(yCategory: IOptional<IDiscreteContext
         return res;
     });
 }
+
+export default function(yCategory: IOptional<IDiscreteContext>, xCategory: IOptional<IDiscreteContext>){
+    return () => {
+        return createValueDataTransformer(yCategory, xCategory);
+    }
+}

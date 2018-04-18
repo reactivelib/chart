@@ -5,7 +5,6 @@
 import {ISeriesShape, SeriesRenderer} from "../../../../../series/render/base";
 import {ICanvasChildShape} from "../../../../../render/canvas/shape/index";
 import {CanvasContext} from "../../../../../render/canvas/context/index";
-import {getTransform} from "../../../../../render/canvas/shape/group/index";
 import {getEndX} from "../../../../../../datatypes/range";
 import {IIntervalData} from "../../../../../../datatypes/interval";
 import {IXIndexedShapeDataHolder} from "../../../../../data/shape/cartesian/transformer/x/index";
@@ -26,7 +25,7 @@ class AreaSeriesShape implements ISeriesShape{
 
     getScreenBoundingBox(){
         var n = this.data;
-        var transform = getTransform(this);
+        var transform = this.series.area.mapper;
         var x = (n.x + getEndX(n)) / 2;
         var bl = transform.transform(x, n.y);
         var tr = transform.transform(x, n.ye);

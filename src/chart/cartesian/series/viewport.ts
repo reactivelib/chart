@@ -2,14 +2,11 @@
  * Copyright (c) 2018. Christoph Rodak  (https://reactivechart.com)
  */
 
-import {CartesianSeries, IXYSeriesSystem} from "./series";
+import {IXYSeriesSystem} from "./series";
 import {XYChartViewportGroup} from "../area/collection/index";
 import {IXYAxis} from "../axis/index";
-import {variable} from "@reactivelib/reactive";
-import {ICartesianViewportSystem, XYAreaSystem} from "../area/index";
-import { ICancellable } from "@reactivelib/reactive";
-import { unobserved } from "@reactivelib/reactive";
-import {deps, variableFactory} from "../../../config/di";
+import {ICancellable, variable} from "@reactivelib/reactive";
+import {XYAreaSystem} from "../area/index";
 
 export default function area(series: IXYSeriesSystem, viewports: XYChartViewportGroup, xAxis: variable.IVariable<IXYAxis>, yAxis: variable.IVariable<IXYAxis>){
     var lastXAxis: IXYAxis;
@@ -39,7 +36,3 @@ export default function area(series: IXYSeriesSystem, viewports: XYChartViewport
     });
     return area;
 }
-
-deps(area, ["series", "viewports", "xAxis", "yAxis"]);
-
-variableFactory(area);

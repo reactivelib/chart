@@ -1,14 +1,9 @@
 import {ValueCategoricalData} from "./data";
 import {IReactiveXSortedRingBuffer} from "../../../../reactive/collection/ring";
 import {ICartesianXPoint} from "../../../../../datatypes/value";
-
-export interface ICartesianValueDataSettings {
-    type?: "csv" | "json";
-    content: string;
-    source?: "local" | "link";
-}
+import {IChartDataSettings} from "../../../../data/convert";
 
 export type CartesianValueDataType =
     ValueCategoricalData[]
     | IReactiveXSortedRingBuffer<ICartesianXPoint>
-    | ICartesianValueDataSettings;
+    | IChartDataSettings;

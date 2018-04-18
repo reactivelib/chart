@@ -37,7 +37,7 @@ export class ColumnSeriesShape extends AbstractSeriesShapeBase implements IColum
     public parent: ColumnShapeRenderer;
 
     public getEndX(s: ICartesianXPoint){
-        return s.xe;
+        return getEndX(s);
     }
 
     getStartX(s: ICartesianXPoint){

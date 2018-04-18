@@ -15,7 +15,7 @@ export type PointHighlighterFactory = (data: ICartesianXInterval, series: Abstra
 
 function initPointGeneral(shape: IStylable, series: ICartesianSeries){
     var style = <any>{
-        fillStyle: series.color
+        fillStyle: series.color.toString()
     }
     style.strokeStyle = "rgb(255, 255, 255)";
     style.strokeWidth = 2;

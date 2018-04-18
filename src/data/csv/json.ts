@@ -5,6 +5,7 @@ export type columnType = "string" | "number" | "date";
 export interface IColumnTypeSettings{
     type: columnType;
     format?: string;
+    required?: boolean;
 }
 
 export interface ICsvToJsonParser{
@@ -24,6 +25,7 @@ export default function csvRowToJson<E>(settings: ICsvToJsonParser): E[]{
     var read = new CSVDataReader(settings.csv);
     var rowIds: string[] = [];
     var rowToType = {};
+    var requiredRows = [];
     for (var key in settings.rowToType || {}){
         var rt = settings.rowToType[key];
         if (typeof rt === "string"){
@@ -32,6 +34,9 @@ export default function csvRowToJson<E>(settings: ICsvToJsonParser): E[]{
             }
         }
         rowToType[key] = rt;
+        if (rt.required){
+            requiredRows.push(key);
+        }
     }
     var i = 0;
     if (settings.hasHeader && read.hasNext()){
@@ -72,7 +77,15 @@ export default function csvRowToJson<E>(settings: ICsvToJsonParser): E[]{
             i++;
         }
         x++;
-        if ("y" in json){
+        var canAdd = true;
+        for (var i=0; i < requiredRows.length; i++){
+            var rr = requiredRows[i];
+            if (!(rr in json)){
+                canAdd = false;
+                break;
+            }
+        }
+        if (canAdd){
             res.push(json);
         }
     }

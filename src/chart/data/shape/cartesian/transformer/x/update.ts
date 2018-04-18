@@ -9,8 +9,6 @@ import {
 } from "../../../../../reactive/collection/ring";
 import {IPointInterval} from "../../../../../../geometry/interval/index";
 import {IXIndexedData} from "../../../../../../datatypes/range";
-import {ICancellableIterator} from "@reactivelib/reactive";
-import {array, IReactiveNode, variable} from "@reactivelib/reactive";
 import {IXIndexedShapeDataHolder} from "./index";
 import {IShapeDataHolder} from "../../../transform/index";
 

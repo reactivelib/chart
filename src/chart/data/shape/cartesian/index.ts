@@ -10,6 +10,8 @@ import {IShapeDataProvider, NormalShapeDataProvider, OffsetShapeDataProvider} fr
 import {createShapesDataCollection} from "./data";
 import {StackingShapesDataCollectionUpdater} from "./transformer/x/stacking";
 import valueTransformer from './value/transformer';
+import intervalTransformer from './interval/transformer';
+import candleTransformer from './candle/transformer';
 import {IDataTransformer} from "./transformer/x/update";
 import {createShapesDataCollection as createXYColl} from './transformer/xy/data';
 
@@ -21,7 +23,9 @@ export class CartesianShapeData{
     create_xTypeToData(){
         var self = this;
         return {
-            point: this.valueData.bind(this)
+            point: this.valueData.bind(this),
+            interval: this.intervalData.bind(this),
+            candle: this.candleData.bind(this)
         }
     }
 
@@ -59,6 +63,14 @@ export class CartesianShapeData{
                 v.value = lastData.data;
             }
             else {
+                if (this.series.xCategory.present){
+                    const xCat = this.series.xCategory.value;
+                    xCat.nr;
+                    xCat.position;
+                    xCat.shared;
+                    xCat.size;
+                    xCat.stack;
+                }
                 lastData = this.xTypeToData[this.series.dataType]();
                 v.value = lastData.data;
             }
@@ -103,6 +115,18 @@ export class CartesianShapeData{
         return valueTransformer(this.series.yCategory, this.series.xCategory);
     }
 
+    @create
+    intervalTransformer: () => IDataTransformer
+    create_intervalTransformer(): () => IDataTransformer{
+        return intervalTransformer(this.series.yCategory, this.series.xCategory);
+    }
+
+    @create
+    candleTransformer: () => IDataTransformer
+    create_candleTransformer(): () => IDataTransformer{
+        return candleTransformer(this.series.yCategory, this.series.xCategory);
+    }
+
     valueData(){
         if (this.series.stack.present){
             var updater = new StackingShapesDataCollectionUpdater(<IReactiveXSortedRingBuffer<any>>this.series.data, this.pointTransformer(), () => this.series.xAxis.window);
@@ -121,5 +145,14 @@ export class CartesianShapeData{
             return createShapesDataCollection(this.pointTransformer(), () => this.series.xAxis.window, this.series.r_data);
         }
     }
+
+    intervalData(){
+        return createShapesDataCollection(this.intervalTransformer(), () => this.series.xAxis.window, this.series.r_data);
+    }
+
+    candleData(){
+        return createShapesDataCollection(this.candleTransformer(), () => this.series.xAxis.window, this.series.r_data);
+    }
+
 
 }

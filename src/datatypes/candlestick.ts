@@ -20,7 +20,7 @@ export interface IVolumeCandlestick extends ICandlestick{
     volume: number;
 }
 
-export interface ICartesianXCandle extends ICandlestick, IColorable, ICategorical{
+export interface ICartesianXCandle extends ICandlestick, IColorable, ICategorical, ILabelData{
 
 }
 
